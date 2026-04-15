@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Cafe Sài Gòn</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="admin-page">
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <h1><i class="fas fa-coffee"></i> Cafe Sài Gòn Admin</h1>
+        </div>
+        <div class="header-right">
+            <a href="home.html" target="_blank" class="btn-view-site">
+                <i class="fas fa-external-link-alt"></i> Xem website
+            </a>
+        </div>
+    </header>
+
+    <!-- Statistics Dashboard -->
+    <section class="stats-dashboard">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-coffee"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalCafes">0</h3>
+                    <p>Tổng số quán cafe</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalPosts">0</h3>
+                    <p>Tổng số bài đăng</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="publishedPosts">0</h3>
+                    <p>Bài đăng đã xuất bản</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="draftPosts">0</h3>
+                    <p>Bài đăng nháp</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-navigation">
+        <button class="tab-btn active" data-tab="cafe">
+            <i class="fas fa-coffee"></i> Quản lý Quán Cafe
+        </button>
+        <button class="tab-btn" data-tab="post">
+            <i class="fas fa-newspaper"></i> Quản lý Bài Đăng
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-content">
+        <!-- Cafe Management Tab -->
+        <div id="cafeTab" class="tab-content active">
+            <div class="content-header">
+                <h2><i class="fas fa-coffee"></i> Quản lý Quán Cafe</h2>
+                <div class="content-actions">
+                    <button id="addCafeBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Thêm quán mới
+                    </button>
+                    <button id="resetCafesBtn" class="btn-secondary">
+                        <i class="fas fa-undo"></i> Khôi phục dữ liệu gốc
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <div id="cafeLoading" class="loading-spinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Đang tải dữ liệu...
+                </div>
+                <table id="cafeTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên quán</th>
+                            <th>Quận</th>
+                            <th>Địa chỉ</th>
+                            <th>Hot</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cafeTableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Post Management Tab -->
+        <div id="postTab" class="tab-content">
+            <div class="content-header">
+                <h2><i class="fas fa-newspaper"></i> Quản lý Bài Đăng</h2>
+                <div class="content-actions">
+                    <button id="addPostBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Thêm bài đăng
+                    </button>
+                    <button id="clearPostsBtn" class="btn-secondary">
+                        <i class="fas fa-trash"></i> Xóa tất cả bài đăng
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <div id="postLoading" class="loading-spinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Đang tải dữ liệu...
+                </div>
+                <table id="postTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tiêu đề</th>
+                            <th>Tác giả</th>
+                            <th>Ngày đăng</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="postTableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cafe Form Modal -->
+    <div id="cafeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="cafeModalTitle">Thêm quán cafe mới</h3>
+                <button class="modal-close" id="closeCafeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="cafeForm" class="admin-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cafeName">Tên quán *</label>
+                        <input type="text" id="cafeName" name="name" required>
+                        <span class="error-message" id="cafeNameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="cafeDistrict">Quận *</label>
+                        <input type="text" id="cafeDistrict" name="district" required>
+                        <span class="error-message" id="cafeDistrictError"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cafeAddress">Địa chỉ *</label>
+                    <input type="text" id="cafeAddress" name="address" required>
+                    <span class="error-message" id="cafeAddressError"></span>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cafeImg">Đường dẫn ảnh</label>
+                        <input type="text" id="cafeImg" name="img" placeholder="anh/1.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="cafeRating">Đánh giá</label>
+                        <input type="text" id="cafeRating" name="rating" placeholder="4.5/5">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cafeReviewCount">Số lượt đánh giá</label>
+                        <input type="number" id="cafeReviewCount" name="reviewCount" placeholder="127" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="cafePhone">Số điện thoại</label>
+                        <input type="text" id="cafePhone" name="phone" placeholder="0909123456">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cafeDesc">Mô tả</label>
+                    <textarea id="cafeDesc" name="desc" rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cafeOpen">Giờ mở cửa</label>
+                        <input type="text" id="cafeOpen" name="open" placeholder="06:30 - 22:30">
+                    </div>
+                    <div class="form-group">
+                        <label for="cafePrice">Giá</label>
+                        <input type="text" id="cafePrice" name="price" placeholder="30.000 - 50.000đ">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="cafeHot" name="hot">
+                            <span class="checkmark"></span>
+                            Quán nổi bật
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelCafeForm">Hủy</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Post Form Modal -->
+    <div id="postModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="postModalTitle">Thêm bài đăng mới</h3>
+                <button class="modal-close" id="closePostModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="postForm" class="admin-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="postTitle">Tiêu đề *</label>
+                        <input type="text" id="postTitle" name="title" required>
+                        <span class="error-message" id="postTitleError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="postAuthor">Tác giả *</label>
+                        <input type="text" id="postAuthor" name="author" required>
+                        <span class="error-message" id="postAuthorError"></span>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="postImage">Đường dẫn ảnh</label>
+                        <input type="text" id="postImage" name="image" placeholder="anh/post1.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="postStatus">Trạng thái *</label>
+                        <select id="postStatus" name="status" required>
+                            <option value="draft">Bản nháp</option>
+                            <option value="published">Đã xuất bản</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postExcerpt">Tóm tắt</label>
+                    <textarea id="postExcerpt" name="excerpt" rows="2"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postContent">Nội dung *</label>
+                    <div id="contentEditor" class="content-editor">
+                        <div class="editor-toolbar">
+                            <button type="button" class="editor-btn" data-command="bold" title="In đậm">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button type="button" class="editor-btn" data-command="italic" title="In nghiêng">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button type="button" class="editor-btn" data-command="underline" title="Gạch chân">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                            <button type="button" class="editor-btn" data-command="insertUnorderedList" title="Danh sách">
+                                <i class="fas fa-list-ul"></i>
+                            </button>
+                            <button type="button" class="editor-btn" data-command="insertOrderedList" title="Danh sách số">
+                                <i class="fas fa-list-ol"></i>
+                            </button>
+                            <button type="button" class="editor-btn" data-command="createLink" title="Liên kết">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                        <div id="postContent" class="editor-content" contenteditable="true"></div>
+                    </div>
+                    <span class="error-message" id="postContentError"></span>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelPostForm">Hủy</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Xác nhận</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="confirmCancel">Hủy</button>
+                <button class="btn-danger" id="confirmOk">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/admin.js"></script>
+    <script>
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize admin components directly without authentication check
+            const adminPanel = new AdminPanel();
+            adminPanel.init();
+        });
+    </script>
+</body>
+</html>

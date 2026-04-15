@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Hệ thống Tin tức tích hợp Admin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .demo-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .demo-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+        }
+        .demo-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .demo-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .demo-link {
+            display: block;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+        .demo-link:hover {
+            transform: translateY(-2px);
+        }
+        .workflow {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        .workflow ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .workflow li {
+            margin: 8px 0;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .feature {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .feature h4 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .feature p {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🚀 Demo - Hệ thống Tin tức tích hợp Admin</h1>
+        
+        <div class="demo-section">
+            <h2>📰 Tích hợp hoàn tất <span class="status success">✅ HOÀN THÀNH</span></h2>
+            <p>Hệ thống tin tức đã được tích hợp hoàn toàn với admin panel. Các tin tức trên trang <code>tintuc.html</code> bây giờ được quản lý thông qua tab "Quản lý Bài Đăng" trong admin panel.</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔄 Workflow quản lý tin tức</h2>
+            <div class="workflow">
+                <h4>Cách thức hoạt động:</h4>
+                <ol>
+                    <li><strong>Admin tạo bài đăng:</strong> Vào admin panel → Tab "Quản lý Bài Đăng" → Thêm bài mới</li>
+                    <li><strong>Chọn trạng thái:</strong> Draft (nháp) hoặc Published (xuất bản)</li>
+                    <li><strong>Tự động hiển thị:</strong> Chỉ bài đăng có trạng thái "Published" mới hiển thị trên trang tin tức</li>
+                    <li><strong>Sắp xếp tự động:</strong> Tin mới nhất hiển thị trước</li>
+                    <li><strong>Lưu trữ:</strong> Dữ liệu được lưu trong localStorage, đồng bộ giữa admin và trang tin tức</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎯 Test ngay bây giờ</h2>
+            <div class="demo-links">
+                <a href="admin.html" class="demo-link">⚙️ Admin Panel</a>
+                <a href="tintuc.html" class="demo-link">📰 Trang Tin tức</a>
+                <a href="home.html" class="demo-link">🏠 Trang chủ</a>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>✨ Tính năng đã triển khai</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h4>📝 Quản lý Bài đăng</h4>
+                    <p>CRUD hoàn chỉnh với content editor, trạng thái draft/published</p>
+                </div>
+                <div class="feature">
+                    <h4>🔄 Đồng bộ Real-time</h4>
+                    <p>Tin tức tự động cập nhật từ admin panel qua localStorage</p>
+                </div>
+                <div class="feature">
+                    <h4>📊 Quản lý Trạng thái</h4>
+                    <p>Chỉ bài đăng "Published" hiển thị trên trang tin tức</p>
+                </div>
+                <div class="feature">
+                    <h4>📅 Sắp xếp Thời gian</h4>
+                    <p>Tin mới nhất hiển thị trước, có thông tin tác giả và ngày đăng</p>
+                </div>
+                <div class="feature">
+                    <h4>🎨 Content Editor</h4>
+                    <p>Editor hỗ trợ HTML formatting: bold, italic, lists, links</p>
+                </div>
+                <div class="feature">
+                    <h4>📱 Responsive</h4>
+                    <p>Giao diện tương thích trên mọi thiết bị</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🧪 Hướng dẫn test chi tiết</h2>
+            <div class="workflow">
+                <h4>Bước 1: Tạo bài đăng mới</h4>
+                <ol>
+                    <li>Vào admin panel trực tiếp</li>
+                    <li>Click tab "Quản lý Bài Đăng"</li>
+                    <li>Click "Thêm bài đăng"</li>
+                    <li>Điền thông tin: tiêu đề, nội dung, tác giả</li>
+                    <li>Chọn trạng thái "Published"</li>
+                    <li>Click "Lưu"</li>
+                </ol>
+                
+                <h4>Bước 2: Kiểm tra kết quả</h4>
+                <ol>
+                    <li>Mở tab mới, vào <code>tintuc.html</code></li>
+                    <li>Bài đăng mới sẽ hiển thị ở đầu danh sách</li>
+                    <li>Click "Xem thêm" để đọc nội dung đầy đủ</li>
+                </ol>
+                
+                <h4>Bước 3: Test trạng thái Draft</h4>
+                <ol>
+                    <li>Tạo bài đăng mới với trạng thái "Draft"</li>
+                    <li>Kiểm tra trang tin tức → bài draft sẽ không hiển thị</li>
+                    <li>Quay lại admin, chuyển trạng thái thành "Published"</li>
+                    <li>Refresh trang tin tức → bài đăng sẽ xuất hiện</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎉 Kết quả</h2>
+            <p><strong>Hệ thống tin tức đã được tích hợp hoàn toàn với admin panel!</strong></p>
+            <p>✅ Tin tức không còn hard-code trong HTML<br>
+               ✅ Quản lý tập trung qua admin panel<br>
+               ✅ Trạng thái draft/published<br>
+               ✅ Content editor với HTML formatting<br>
+               ✅ Tự động sắp xếp theo thời gian<br>
+               ✅ Responsive design</p>
+        </div>
+    </div>
+</body>
+</html>

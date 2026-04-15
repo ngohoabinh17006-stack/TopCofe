@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test Admin Panel Data Loading</h1>
+        
+        <div class="test-section">
+            <h3>1. Test DataStore</h3>
+            <button class="test-button" onclick="testDataStore()">Test DataStore Methods</button>
+            <div id="dataStoreResult" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. Test File Loading</h3>
+            <button class="test-button" onclick="testFileLoading()">Test Load db.json</button>
+            <div id="fileLoadResult" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. Test CafeManager</h3>
+            <button class="test-button" onclick="testCafeManager()">Test CafeManager</button>
+            <div id="cafeManagerResult" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>4. Quick Links</h3>
+            <a href="login.html" class="test-button">Go to Login</a>
+            <a href="admin.html" class="test-button">Go to Admin (Direct)</a>
+            <button class="test-button" onclick="clearStorage()">Clear All Storage</button>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        async function testDataStore() {
+            const result = document.getElementById('dataStoreResult');
+            result.className = 'test-result info';
+            result.textContent = 'Testing DataStore...';
+            
+            try {
+                // Test save and load
+                const testData = [{id: 1, name: 'Test Cafe'}];
+                const saveResult = DataStore.save('test_key', testData);
+                const loadResult = DataStore.load('test_key');
+                
+                result.className = 'test-result success';
+                result.textContent = `✅ DataStore working!
+Save result: ${saveResult}
+Load result: ${JSON.stringify(loadResult, null, 2)}`;
+                
+                // Clean up
+                DataStore.remove('test_key');
+            } catch (e) {
+                result.className = 'test-result error';
+                result.textContent = `❌ DataStore error: ${e.message}`;
+            }
+        }
+        
+        async function testFileLoading() {
+            const result = document.getElementById('fileLoadResult');
+            result.className = 'test-result info';
+            result.textContent = 'Testing file loading...';
+            
+            try {
+                const data = await DataStore.loadFromFile('data/db.json');
+                
+                if (data && Array.isArray(data)) {
+                    result.className = 'test-result success';
+                    result.textContent = `✅ File loaded successfully!
+Found ${data.length} cafes
+First cafe: ${JSON.stringify(data[0], null, 2)}`;
+                } else {
+                    result.className = 'test-result error';
+                    result.textContent = `❌ File loading failed or invalid data format
+Data: ${JSON.stringify(data)}`;
+                }
+            } catch (e) {
+                result.className = 'test-result error';
+                result.textContent = `❌ File loading error: ${e.message}`;
+            }
+        }
+        
+        async function testCafeManager() {
+            const result = document.getElementById('cafeManagerResult');
+            result.className = 'test-result info';
+            result.textContent = 'Testing CafeManager...';
+            
+            try {
+                const cafeManager = new CafeManager();
+                await cafeManager.loadData();
+                const cafes = cafeManager.getAll();
+                
+                result.className = 'test-result success';
+                result.textContent = `✅ CafeManager working!
+Loaded ${cafes.length} cafes
+Cafes: ${cafes.map(c => c.name).join(', ')}`;
+            } catch (e) {
+                result.className = 'test-result error';
+                result.textContent = `❌ CafeManager error: ${e.message}
+Stack: ${e.stack}`;
+            }
+        }
+        
+        function clearStorage() {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert('All storage cleared!');
+        }
+        
+        // Auto-run basic tests on load
+        window.addEventListener('load', function() {
+            console.log('Test page loaded, running basic tests...');
+            testDataStore();
+        });
+    </script>
+</body>
+</html>
